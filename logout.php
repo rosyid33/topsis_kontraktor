@@ -1,0 +1,9 @@
+<?php
+    session_start();
+    unset($_SESSION['topsis_kontraktor_id']);
+    unset($_SESSION['topsis_kontraktor_username']);
+    unset($_SESSION['topsis_kontraktor_level']);
+    unset($_SESSION['topsis_kontraktor_key']);
+    unset($_SESSION['topsis_kontraktor_last_login']);
+    session_destroy();
+    header("location:login.php");
