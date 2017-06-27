@@ -88,6 +88,14 @@ $jumlah=$db_object->db_num_rows($query);
             <!-- BEGIN CONTENT -->
             <!--<div class="col-md-9 col-sm-7">-->
                 <h1>Master Proyek</h1>
+                <?php
+                if (!empty($pesan_error)) {
+                    display_error($pesan_error);
+                }
+                if (!empty($pesan_success)) {
+                    display_success($pesan_success);
+                }
+                ?>
                 <div class="content-form-page">
                     <form role="form" class="form-horizontal form-without-legend" method="post" action="">
                         <div class="form-group">
