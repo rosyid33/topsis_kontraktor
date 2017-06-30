@@ -26,7 +26,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="index.php?menu=proyek">Master Proyek</a></li>
                         <li><a href="index.php?menu=kriteria">Kriteria</a></li>
-                        <li><a href="index.php?menu=sub-kriteria">Sub-Kriteria</a></li>
+                        <!--<li><a href="index.php?menu=sub-kriteria">Sub-Kriteria</a></li>-->
                     </ul>
                 </li>
                 

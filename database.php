@@ -51,6 +51,11 @@ class database {
         return mysqli_query($conn, $sql);
     }
 
+    function db_real_escape_string($string){
+        $conn = $this->koneksi;
+        return $conn->real_escape_string($string);
+    }
+    
     /**
      * mysql_error
      * @return type

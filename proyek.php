@@ -112,6 +112,7 @@ $jumlah=$db_object->db_num_rows($query);
                         if(!empty($row_edit)){
                             ?>
                             <input type="hidden" value="<?php echo $row_edit['id']; ?>" name="id_edit"/>
+                            <a href="index.php?menu=proyek" class="btn btn-default">cancel</a>
                             <button class="btn btn-primary" name="update" type="submit">Update</button>
                             <?php
                         }
@@ -139,6 +140,9 @@ $jumlah=$db_object->db_num_rows($query);
                                     echo "<td>".$no."</td>";
                                     echo "<td>".$row['nama_proyek']."</td>";
                                     echo "<td>"
+                                            . "<a href='?menu=kriteria_proyek&proyekid=".$row['id']."' >"
+                                            . "<img src='assets/images/icon/view.gif'/></a>"
+                                            ."&nbsp;&nbsp;&nbsp;"
                                             ." <a href='?menu=proyek&edit=".$row['id']."'>"
                                             . "<img src='assets/images/icon/edit.gif'/></a>"
                                             ."&nbsp;&nbsp;&nbsp;"
