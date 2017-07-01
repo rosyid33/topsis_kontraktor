@@ -140,7 +140,7 @@ $jumlah=$db_object->db_num_rows($query);
                                     echo "<td>".$no."</td>";
                                     echo "<td>".$row['nama_proyek']."</td>";
                                     echo "<td>"
-                                            . "<a href='?menu=kriteria_proyek&proyekid=".$row['id']."' >"
+                                            . "<a href='?menu=kriteria_proyek&proyekId=".$row['id']."' >"
                                             . "<img src='assets/images/icon/view.gif'/></a>"
                                             ."&nbsp;&nbsp;&nbsp;"
                                             ." <a href='?menu=proyek&edit=".$row['id']."'>"

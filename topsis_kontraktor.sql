@@ -26,14 +26,15 @@ CREATE TABLE `kontraktor` (
   `alamat` text,
   `telepon` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `kontraktor` */
 
 insert  into `kontraktor`(`id`,`nama_kontraktor`,`alamat`,`telepon`) values 
-(1,'test1','terserah','081922822829'),
-(2,'test','coba alamat',''),
-(3,'coba','                                                                    ','');
+(1,'PCS','',''),
+(2,'Swadaya Graha','',''),
+(3,'Mustika Zidane Karya','',''),
+(4,'Sasmito','','');
 
 /*Table structure for table `kriteria` */
 
@@ -78,9 +79,30 @@ CREATE TABLE `kriteria_proyek` (
   `proyek_id` int(11) DEFAULT NULL,
   `kriteria_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 /*Data for the table `kriteria_proyek` */
+
+insert  into `kriteria_proyek`(`id`,`proyek_id`,`kriteria_id`) values 
+(3,5,3),
+(4,5,4),
+(5,5,5),
+(6,5,6),
+(7,5,7),
+(8,5,8),
+(9,5,9),
+(10,5,10),
+(11,5,11),
+(12,5,12),
+(13,5,13),
+(14,5,14),
+(15,5,15),
+(16,5,16),
+(17,5,17),
+(18,5,18),
+(19,5,19),
+(20,5,1),
+(21,5,2);
 
 /*Table structure for table `nilai_kriteria` */
 
@@ -89,9 +111,8 @@ DROP TABLE IF EXISTS `nilai_kriteria`;
 CREATE TABLE `nilai_kriteria` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `proyek_id` int(11) DEFAULT NULL,
-  `sub_kriteria_id` int(11) DEFAULT NULL,
-  `kriteria_proyek_id` int(11) DEFAULT NULL,
   `kontraktor_id` int(11) DEFAULT NULL,
+  `sub_kriteria_id` int(11) DEFAULT NULL,
   `nilai` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -122,7 +143,7 @@ CREATE TABLE `sub_kriteria` (
   `id_kriteria` int(11) DEFAULT NULL,
   `sub_kriteria` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1;
 
 /*Data for the table `sub_kriteria` */
 
