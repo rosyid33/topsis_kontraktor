@@ -84,8 +84,18 @@ $sql = "SELECT
             ON k_proyek.`kriteria_id` = kr.`id`,
             sub_kriteria sub_kr 
           WHERE 
-          sub_kr.`id_kriteria` = kr.`id` 
-          ORDER BY kr.id";
+          sub_kr.`id_kriteria` = kr.`id` ";
+if(!empty($_POST['kriteria'])){
+    $sql .= " AND kr.kriteria_nama LIKE '%".$_POST['kriteria']."%' ";
+}
+if(!empty($_POST['kriteria_code'])){
+    $sql .= " AND kr.kriteria_code LIKE '%".$_POST['kriteria_code']."%' ";
+}
+if(!empty($_POST['sub_kriteria'])){
+    $sql .= " AND sub_kr.sub_kriteria LIKE '%".$_POST['sub_kriteria']."%' ";
+}
+$sql .= " ORDER BY kr.id";
+
 $query = $db_object->db_query($sql);
 $jumlah = $db_object->db_num_rows($query);
 ?>
@@ -111,90 +121,86 @@ $jumlah = $db_object->db_num_rows($query);
                 <form role="form" class="form-horizontal form-without-legend" method="post" action="">
 
                     <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
+                        <div class="form-group">
+                            <div class="col-sm-3">
                                 <input type="text" name="kriteria" id="first-name" class="form-control"
                                        value="<?php echo (!empty($_POST['kriteria'])) ? $_POST['kriteria'] : ""; ?>"
                                        placeholder="Kriteria">
                             </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
+                            <div class="col-sm-3">
                                 <input type="text" name="kriteria_code" id="first-name" class="form-control"
                                        value="<?php echo (!empty($_POST['kriteria_code'])) ? $_POST['kriteria_code'] : ""; ?>" 
                                        placeholder="Kriteria Code">
                             </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
+                            <div class="col-sm-3">
                                 <input type="text" name="sub_kriteria" id="first-name" class="form-control"
                                        value="<?php echo (!empty($_POST['sub_kriteria'])) ? $_POST['sub_kriteria'] : ""; ?>" 
                                        placeholder="Sub-kriteria">
                             </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
+                            <div class="col-sm-3">
                                 <button class="btn btn-primary" name="Search_filter" type="submit">Search</button>
                             </div>
                         </div>
                     </div>
+                    <br><br>
 
+                    <div class="row">
+                        <input type="hidden" value="<?php echo $IdProyek; ?>" name="proyekId"/>                    
+                        <table class='table table-bordered table-striped table-hover' style="width: 100%;">
+                            <tr>
+                                <th>No</th>
+                                <th>Kriteria Kode</th>
+                                <th>Kriteria</th>
+                                <th>Sub-Kriteria</th>
+                                <th><button class="btn btn-primary" name="check" type="submit">Check</button></th>
+                                <th><button class="btn btn-primary" name="uncheck" type="submit">UnCheck</button></th>
+                            </tr>
+                            <?php
+                            $no = 1;
+                            $podo = "";
+                            while ($row = $db_object->db_fetch_array($query)) {
+                                echo "<tr>";
+                                if ($podo == $row['id']) {
+                                    echo "<td></td>";
+                                    echo "<td></td>";
+                                    echo "<td></td>";
+                                    echo "<td>" . $row['sub_kriteria'] . "</td>";
+                                    echo "<td></td>";
+                                    echo "<td></td>";
+                                } else {
+                                    echo "<td>" . $no . "</td>";
+                                    echo "<td>" . $row['kriteria_code'] . "</td>";
+                                    echo "<td>" . $row['kriteria_nama'] . "</td>";
+                                    echo "<td>" . $row['sub_kriteria'] . "</td>";
+                                    if (empty($row['proyek_id'])) {
+                                        echo "<td>"
+                                        . "<center>"
+                                        . " <input type='checkbox' name='ceker[" . $row['id'] . "]' value='" . $row['id'] . "'/>"
+                                        . "</center>"
+                                        . "</td>";
+                                        echo "<td><center>UnCheked</center></td>";
+                                    } else {
+                                        echo "<td><center>Cheked</center></td>";
+                                        echo "<td>"
+                                        . "<center>"
+                                        . " <input type='checkbox' name='unceker[" . $row['id'] . "]' value='" . $row['id'] . "'/>"
+                                        . "</center>"
+                                        . "</td>";
+                                    }
 
-                    <input type="hidden" value="<?php echo $IdProyek; ?>" name="proyekId"/>                    
-                    <table class='table table-bordered table-striped table-hover' style="width: 100%;">
-                        <tr>
-                            <th>No</th>
-                            <th>Kriteria Kode</th>
-                            <th>Kriteria</th>
-                            <th>Sub-Kriteria</th>
-                            <th><button class="btn btn-primary" name="check" type="submit">Check</button></th>
-                            <th><button class="btn btn-primary" name="uncheck" type="submit">UnCheck</button></th>
-                        </tr>
-                    <?php
-                    $no = 1;
-                    $podo = "";
-                    while ($row = $db_object->db_fetch_array($query)) {
-                        echo "<tr>";
-                        if ($podo == $row['id']) {
-                            echo "<td></td>";
-                            echo "<td></td>";
-                            echo "<td></td>";
-                            echo "<td>" . $row['sub_kriteria'] . "</td>";
-                            echo "<td></td>";
-                            echo "<td></td>";
-                        } else {
-                            echo "<td>" . $no . "</td>";
-                            echo "<td>" . $row['kriteria_code'] . "</td>";
-                            echo "<td>" . $row['kriteria_nama'] . "</td>";
-                            echo "<td>" . $row['sub_kriteria'] . "</td>";
-                            if (empty($row['proyek_id'])) {
-                                echo "<td>"
-                                . "<center>"
-                                . " <input type='checkbox' name='ceker[" . $row['id'] . "]' value='" . $row['id'] . "'/>"
-                                . "</center>"
-                                . "</td>";
-                                echo "<td><center>UnCheked</center></td>";
-                            } else {
-                                echo "<td><center>Cheked</center></td>";
-                                echo "<td>"
-                                . "<center>"
-                                . " <input type='checkbox' name='unceker[" . $row['id'] . "]' value='" . $row['id'] . "'/>"
-                                . "</center>"
-                                . "</td>";
+                                    $no++;
+                                }
+                                echo "</tr>";
+                                $podo = $row['id'];
                             }
-
-                            $no++;
-                        }
-                        echo "</tr>";
-                        $podo = $row['id'];
-                    }
-                    ?>
-                    </table>
+                            ?>
+                        </table>
                 </form>
             </div>
-            <!--</div>-->
-            <!-- END CONTENT -->
-        </div>        
+        </div>
+        <!--</div>-->
+        <!-- END CONTENT -->
+    </div>        
 
-    </div>
+</div>
 </div>
