@@ -101,10 +101,10 @@ if(isset($_POST['update'])){
 if (isset($_GET['delete'])) {
     $id_delete = $_GET['delete'];
     
-    $sql = "DELETE FROM kriteria WHERE id=".$id_delete;
+    $sql = "DELETE FROM sub_kriteria WHERE id=".$id_delete;
     $db_object->db_query($sql);
     ?>
-    <script> location.replace("?menu=kriteria&pesan_success=Data berhasil dihapus");</script>
+    <script> location.replace("?menu=sub_kriteria&kriteriaId=<?php echo $IdKriteria; ?>&pesan_success=Data berhasil dihapus");</script>
     <?php
 }
 
