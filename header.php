@@ -31,6 +31,7 @@
                 </li>
                 
                 <li><a href="index.php?menu=kontraktor">Kontraktor</a></li>
+                <li><a href="index.php?menu=input_nilai">Input Nilai</a></li>
 
                 <li><a href="index.php?menu=proses_topsis">Proses Topsis</a></li>
                 <li><a href="index.php?menu=user">User</a></li>

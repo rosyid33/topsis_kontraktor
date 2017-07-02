@@ -133,43 +133,80 @@ function list_periode($name, $selected_id='', $required=false, $all=false, $text
     echo "</select>";
 }
 
-function list_mata_kuliah($name, $selected_id='', $required=false, $all=false, $text_all='-', $where='', $params=''){
+
+function text_with_list_proyek($label='', $name='', $value='', $required=false, $all=false, $text_all='-',$where='', $params='')
+{
+    label($label);
+    echo "<div class='col-lg-10'>";
+    list_proyek($name, $value, $required, $all, $text_all, $where, $params);
+    echo "</div>";
+}
+
+/**
+ * data list proyek
+ * @param string $name
+ * @param string $selected_id default=''
+ * @param boolean $required default=false
+ * @param boolean $all default=false
+ * @param string $text_all default='-' tulisan dipilihan all
+ * @param string $where default='' kondisi query, tuisan where sudah ada tingggal tambahkan sendiri...
+ * @param string $params default=''
+ */
+function list_proyek($name, $selected_id='', $required=false, $all=false, $text_all='-', $where='', $params=''){
         $db_obj = new database();
         
-    $table = "mata_kuliah";
-        $query = $db_obj->display_table_all_column($table, $where, false, false, 0, 0, 'id_mk');
-    echo "<select name='$name' "; if($required) echo "required='required'"; echo " class='form-control' ".$params." >";
+	$table = "proyek";
+        $query = $db_obj->display_table_all_column($table, $where, false, false, 0, 0, 'nama_proyek');
+	echo "<select name='$name' "; if($required) echo "required='required'"; echo " class='form-control' ".$params." >";
         //pilihan semua / kosong
         if($all){                
             echo "<option value=''> $text_all </option>";
         }
-    
+	
         //loop data
-        while($myrow = $db_obj->db_fetch_array($query)){    
-            echo "<option value='".$myrow['id_mk']."' "; if($selected_id==$myrow['id_mk']) echo "selected='selected'";
-            echo ">".$myrow['n_mk']."</option>";       
+        while($myrow = $db_obj->db_fetch_array($query)){	
+            echo "<option value='".$myrow['id']."' "; if($selected_id==$myrow['id']) echo "selected='selected'";
+            echo ">".$myrow['nama_proyek']."</option>";		
         }
-    echo "</select>";
+	echo "</select>";
 }
 
 
-function list_dosen($name, $selected_id='', $required=false, $all=false, $text_all='-', $where='', $params=''){
+function text_with_list_kontraktor($label='', $name='', $value='', $required=false, $all=false, $text_all='-',$where='', $params='')
+{
+    label($label);
+    echo "<div class='col-lg-10'>";
+    list_kontraktor($name, $value, $required, $all, $text_all, $where, $params);
+    echo "</div>";
+}
+
+/**
+ * data list kontraktor
+ * @param string $name
+ * @param string $selected_id default=''
+ * @param boolean $required default=false
+ * @param boolean $all default=false
+ * @param string $text_all default='-' tulisan dipilihan all
+ * @param string $where default='' kondisi query, tuisan where sudah ada tingggal tambahkan sendiri...
+ * @param string $params default=''
+ */
+function list_kontraktor($name, $selected_id='', $required=false, $all=false, $text_all='-', $where='', $params=''){
         $db_obj = new database();
         
-    $table = "dosen";
-        $query = $db_obj->display_table_all_column($table, $where, false, false, 0, 0, 'id_dosen');
-    echo "<select name='$name' "; if($required) echo "required='required'"; echo " class='form-control' ".$params." >";
+	$table = "kontraktor";
+        $query = $db_obj->display_table_all_column($table, $where, false, false, 0, 0, 'nama_kontraktor');
+	echo "<select name='$name' "; if($required) echo "required='required'"; echo " class='form-control' ".$params." >";
         //pilihan semua / kosong
         if($all){                
             echo "<option value=''> $text_all </option>";
         }
-    
+	
         //loop data
-        while($myrow = $db_obj->db_fetch_array($query)){    
-            echo "<option value='".$myrow['id_dosen']."' "; if($selected_id==$myrow['id_dosen']) echo "selected='selected'";
-            echo ">".$myrow['nama']."</option>";       
+        while($myrow = $db_obj->db_fetch_array($query)){	
+            echo "<option value='".$myrow['id']."' "; if($selected_id==$myrow['id']) echo "selected='selected'";
+            echo ">".$myrow['nama_kontraktor']."</option>";		
         }
-    echo "</select>";
+	echo "</select>";
 }
 
 
@@ -380,7 +417,7 @@ function end_column(){
  * @param type $params parameter tambahan default=''
  */
 function label($label='', $params=''){
-	echo "<label for='name' $params >".$label;//.<!-- <span class="red">(required)</span> --></label>"
+	echo "<label for='name' class='col-lg-2 control-label' $params  >".$label;//.<!-- <span class="red">(required)</span> --></label>"
 	echo "</label>";
 }
 

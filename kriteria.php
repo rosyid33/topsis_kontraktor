@@ -116,12 +116,35 @@ if(isset($_POST['update'])){
 
 if (isset($_GET['delete'])) {
     $id_delete = $_GET['delete'];
+    $can_process = true;
     
-    $sql = "DELETE FROM kriteria WHERE id=".$id_delete;
-    $db_object->db_query($sql);
-    ?>
-    <script> location.replace("?menu=kriteria&pesan_success=Data berhasil dihapus");</script>
-    <?php
+    $sql = "SELECT * FROM sub_kriteria WHERE id_kriteria = ".$id_delete;
+    $result = $db_object->db_query($sql);
+    $cek_jumlah = $db_object->db_num_rows($result);
+    if($cek_jumlah>0){
+        $can_process = false;
+        ?>
+        <script> location.replace("?menu=kriteria&pesan_error=Kriteria masih ada sub kriteria");</script>
+        <?php
+    }
+    
+    $sql = "SELECT * FROM kriteria_proyek WHERE kriteria_id = ".$id_delete;
+    $result = $db_object->db_query($sql);
+    $cek_jumlah = $db_object->db_num_rows($result);
+    if($cek_jumlah>0){
+        $can_process = false;
+        ?>
+        <script> location.replace("?menu=kriteria&pesan_error=Kriteria masih ada terhubung dengan suatu proyek");</script>
+        <?php
+    }
+    
+    if($can_process){
+        $sql = "DELETE FROM kriteria WHERE id=".$id_delete;
+        $db_object->db_query($sql);
+        ?>
+        <script> location.replace("?menu=kriteria&pesan_success=Data berhasil dihapus");</script>
+        <?php
+    }
 }
 
 if(isset($_GET['edit'])){
