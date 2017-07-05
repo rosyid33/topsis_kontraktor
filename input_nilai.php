@@ -27,24 +27,41 @@ if (isset($_REQUEST['proyekId'])) {
 
 //action tombol check
 if (isset($_POST['save_data'])) {
-    $val_sql = array();
-    foreach ($_POST['nilai'] as $key => $value) {
-        $val_sql[] = "(\"" . $IdProyek . "\", \"" . $_POST['kontraktor_id'] . "\", \"".$key."\", \"".$value."\")";
+    $can_process = true;
+    
+    $sql = "SELECT id FROM nilai_kriteria "
+            . " WHERE proyek_id = '".$IdProyek."' "
+            . " AND kontraktor_id = '".$_POST['kontraktor_id']."' ";
+    $result = $db_object->db_query($sql);
+    $thereis = $db_object->db_num_rows($result);
+    if($thereis > 0){
+        $can_process = false;
+        ?>
+        <script> location.replace("?menu=input_nilai&pesan_error=Data sudah diinput");</script>
+        <?php
     }
+    
+    if($can_process){
+        $val_sql = array();
+        foreach ($_POST['nilai'] as $key => $value) {
+            $val_sql[] = "(\"" . $IdProyek . "\", \"" . $_POST['kontraktor_id'] . "\", \"" . $_POST['kriteria'][$key] . "\", "
+                    . " \"".$key."\", \"".$value."\")";
+        }
 
-    $sql_value = implode(",", $val_sql);
-    $sql1 = "INSERT INTO nilai_kriteria "
-            . " (proyek_id, kontraktor_id, sub_kriteria_id, nilai) "
-            . " VALUES " . $sql_value;
-    $result1 = $db_object->db_query($sql1);
-    if ($result1) {
-        ?>
-        <script> location.replace("?menu=input_nilai&pesan_success=Data berhasil disimpan");</script>
-        <?php
-    } else {
-        ?>
-        <script> location.replace("?menu=input_nilai&pesan_error=Data gagal disimpan");</script>
-        <?php
+        $sql_value = implode(",", $val_sql);
+        $sql1 = "INSERT INTO nilai_kriteria "
+                . " (proyek_id, kontraktor_id, kriteria_id, sub_kriteria_id, nilai) "
+                . " VALUES " . $sql_value;
+        $result1 = $db_object->db_query($sql1);
+        if ($result1) {
+            ?>
+            <script> location.replace("?menu=input_nilai&pesan_success=Data berhasil disimpan");</script>
+            <?php
+        } else {
+            ?>
+            <script> location.replace("?menu=input_nilai&pesan_error=Data gagal disimpan");</script>
+            <?php
+        }
     }
 }
 
@@ -166,10 +183,12 @@ $jumlah = $db_object->db_num_rows($query);
                                 }
                                 echo "<td>" . $row['sub_kriteria'] . "</td>";
                                 echo "<td>"
-                                . "<center>"
-                                . " <input type='text' name='nilai[" . $row['id_sub_kriteria'] . "]' "
-                                        . " onkeyup=\"this.value=this.value.replace(/[^\d]/,'')\" required='required'/>"
-                                . "</center>"
+//                                . "<center>"
+                                . " <input type='hidden' name='kriteria[" . $row['id_sub_kriteria'] . "]' value=\"".$row['id']."\" />"
+//                                . " <input type='text' name='nilai[" . $row['id_sub_kriteria'] . "]' "
+//                                        . " onkeyup=\"this.value=this.value.replace(/[^\d]/,'')\" required='required'/>"
+                                . list_numbers("nilai[".$row['id_sub_kriteria']."]", '', true, true, '-', 3, '')
+//                                . "</center>"
                                 . "</td>";
                                 echo "</tr>";
                                 $podo = $row['id'];

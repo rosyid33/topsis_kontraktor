@@ -230,23 +230,24 @@ function list_bulan($selected_id){
 
 function list_numbers($name, $selected_id='', $required=false, $all=false, $text_all='-', $count=5, $params=''){
         
-	echo "<select name='$name' "; 
-            echo ($required==true)?"required='required'":""; 
-            echo "$params style='width: 100%;'>";
+	$text = "<select name='$name' "; 
+            $text .= ($required==true)?"required='required'":""; 
+            $text .= "$params >";
         //pilihan semua / kosong
         if($all){                
-            echo "<option value=''> $text_all </option>";
+            $text .= "<option value=''> $text_all </option>";
         }
 	
         //loop data
-        $no = 1;
+        $no = 0;
         while($no <= $count){
-            echo "<option value='".$no."' "; 
-            echo ($selected_id==$no)?"selected='selected'":"";
-            echo ">".$no."</option>";	
+            $text .= "<option value='".$no."' "; 
+            //$text .= ($selected_id==$no)?"selected='selected'":"";
+            $text .= ">".$no."</option>";	
             $no++;
         }
-	echo "</select>";
+	$text .= "</select>";
+        return $text;
 }
 
 //END LIST-LIST/COMBOBOX
