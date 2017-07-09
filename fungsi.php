@@ -228,7 +228,7 @@ function list_bulan($selected_id){
 	echo "</select>";
 }
 
-function list_numbers($name, $selected_id='', $required=false, $all=false, $text_all='-', $count=5, $params=''){
+function list_numbers($name, $selected_id='', $required=false, $all=false, $text_all='-', $count=5, $params='', $start_number=0){
         
 	$text = "<select name='$name' "; 
             $text .= ($required==true)?"required='required'":""; 
@@ -239,7 +239,7 @@ function list_numbers($name, $selected_id='', $required=false, $all=false, $text
         }
 	
         //loop data
-        $no = 0;
+        $no = $start_number;
         while($no <= $count){
             $text .= "<option value='".$no."' "; 
             //$text .= ($selected_id==$no)?"selected='selected'":"";
