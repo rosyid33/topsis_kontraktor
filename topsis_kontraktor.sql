@@ -12,6 +12,21 @@ MySQL - 10.1.16-MariaDB : Database - topsis_kontraktor
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*Table structure for table `hasil` */
+
+DROP TABLE IF EXISTS `hasil`;
+
+CREATE TABLE `hasil` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyek_id` int(11) DEFAULT NULL,
+  `kontraktor_id` int(11) DEFAULT NULL,
+  `nilai_v` double DEFAULT NULL,
+  `tanggal` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `hasil` */
+
 /*Table structure for table `kontraktor` */
 
 DROP TABLE IF EXISTS `kontraktor`;

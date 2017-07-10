@@ -1,6 +1,6 @@
 <?php
 
-function process_topsis($nilai_kriteria, $kontraktor, $kriteria_code, $bobot){
+function process_topsis($db_object, $IdProyek, $nilai_kriteria, $kontraktor, $kriteria_code, $bobot){
     //di tampung di variable array dulu
     $data_nilai = array();
     foreach ($nilai_kriteria as $id => $nilainya) {
@@ -191,25 +191,77 @@ function process_topsis($nilai_kriteria, $kontraktor, $kriteria_code, $bobot){
                 
                 $NilaiV = array();
                 echo "<tr>";
+                
+                //cek dulu sebelum looping
+                $sql_cek = "SELECT * FROM hasil
+                            WHERE proyek_id = ".$IdProyek."
+                            ORDER BY nilai_v DESC";
+                $result = $db_object->db_query($sql_cek);
+                $ada = $db_object->db_num_rows($result);
+                //nek onok dibusek disek...
+                if($ada > 0){
+                    $sql_del = "DELETE FROM hasil WHERE proyek_id = ".$IdProyek;
+                    $db_object->db_query($sql_del);
+                }
+                
+                
                 foreach ($kontraktor as $id_kontraktor => $nama) {
                     $nilai_v = $IdealNegatif[$id_kontraktor]/($IdealPositif[$id_kontraktor]+$IdealNegatif[$id_kontraktor]);
                     $NilaiV[$id_kontraktor] = $nilai_v;
+                    
+                    //simpan ke db
+                    $res = save_hasil_akhir($db_object, $IdProyek, $id_kontraktor, $nilai_v);
                     echo "<td>".price_format($nilai_v)."</td>";
                 }
                 echo "</tr>";
         echo "</table>";
         
-        
+        //======================================================================
         br();br();
         //Urutan dari yang terbesar ke terkecil
         echo "<strong>Urutan dari yang terbesar ke terkecil</strong>";
         br();
         //disimpan table saja trus di sort (order by)
+        $sql = "SELECT
+                    hasil.*,
+                    kontraktor.`nama_kontraktor`
+                  FROM
+                    hasil,
+                    kontraktor
+                  WHERE 
+                  hasil.`kontraktor_id` = kontraktor.`id`
+                  AND proyek_id = ".$IdProyek."
+                  ORDER BY nilai_v DESC";
+        $result=$db_object->db_query($sql);
         
+        echo "<table class='table table-bordered table-striped table-hover' style='width: 80%;'>
+                    <tr>
+                        <th ><center>Kontraktor</center></th>
+                        <th ><center>Nilai</center></th>
+                    </tr>";
+                
+                
+                while($row = $db_object->db_fetch_array($result)){
+                    echo "<tr>";
+                    echo "<td>".($row['nama_kontraktor'])."</td>";
+                    echo "<td>".price_format($row['nilai_v'])."</td>";
+                    echo "</tr>";
+                }
+                
+        echo "</table>";
         
     echo "</div>";
     echo "</div>";
     echo "</div>";
         
         
+}
+
+function save_hasil_akhir($db_object, $proyek_id, $kontraktor_id, $nilai_v){
+    $sql = "INSERT INTO hasil 
+            (proyek_id, kontraktor_id, nilai_v, tanggal)
+            VALUES
+            ('".$proyek_id."', '".$kontraktor_id."', '".$nilai_v."', '".date("Y-m-d H:i:s")."')";
+    $result = $db_object->db_query($sql);
+    return $result;
 }

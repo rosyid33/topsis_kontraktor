@@ -203,7 +203,7 @@ if(isset($_POST['select_display']) || isset($_POST['process'])){
             
                 <?php
                 if(isset($_POST['process'])){
-                    process_topsis($nilai_kriteria, $kontraktor, $kriteria_code, $_POST['w_bobot']);
+                    process_topsis($db_object, $IdProyek, $nilai_kriteria, $kontraktor, $kriteria_code, $_POST['w_bobot']);
                 }
                 ?>
             </div>
