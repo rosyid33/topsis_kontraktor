@@ -100,7 +100,7 @@ function process_topsis($nilai_kriteria, $kontraktor, $kriteria_code, $bobot){
             }
             echo "</tr>";
             
-            $NilaiMax = $NilaiMin = array();
+            $NilaiMax = $NilaiMin = $NilaiNormalisasiTerbobot = array();
             foreach ($NilaiNormalisasi as $kriteria_code => $nilainya) {
                 echo "<tr>";
                 echo "<td>".$kriteria_code."</td>"; 
@@ -108,6 +108,8 @@ function process_topsis($nilai_kriteria, $kontraktor, $kriteria_code, $bobot){
                 foreach ($nilainya as $id_kontraktor => $nilai) {
                     $nilai_normalisasi_bobot = $nilai * $bobot[$kriteria_code];
                     $array_nampung[] = $nilai_normalisasi_bobot;
+                    $NilaiNormalisasiTerbobot[$kriteria_code][$id_kontraktor] = $nilai_normalisasi_bobot;
+                    
                     echo "<td>".price_format($nilai_normalisasi_bobot)."</td>";
                 }
                 
@@ -121,6 +123,89 @@ function process_topsis($nilai_kriteria, $kontraktor, $kriteria_code, $bobot){
                 echo "</tr>";
             }
         echo "</table>";
+        
+        
+        //======================================================================
+        br();br();
+         //Menghitung jarak antara nilai terbobot setiap alternatif terhadap solusi ideal positif dan negatif
+        echo "<strong>Menghitung jarak antara nilai terbobot setiap alternatif terhadap solusi ideal positif dan negatif</strong>";
+        br();
+        echo "<table class='table table-bordered table-striped table-hover' style='width: 80%;'>
+                    <tr>
+                        <th rowspan='2'></th>
+                        <th colspan='".(count($kontraktor))."'><center>Alternatif</center></th>
+                    </tr>";
+            
+            echo "<tr>";    
+            foreach ($kontraktor as $id => $nama) {
+                echo "<th>".$nama."</th>";  
+            }
+            echo "</tr>";
+            
+            $SUMIdealPositif = $SUMIdealNegatif = array();
+            foreach ($NilaiNormalisasiTerbobot as $kriteria_code => $nilainya) {
+                
+                foreach ($nilainya as $id_kontraktor => $nilai) {
+                    $pangkatDuaPositif = pow($nilai - $NilaiMax[$kriteria_code], 2);
+                    $pangkatDuaNegatif = pow($nilai - $NilaiMin[$kriteria_code], 2);
+                    $SUMIdealPositif[$id_kontraktor] += $pangkatDuaPositif;
+                    $SUMIdealNegatif[$id_kontraktor] += $pangkatDuaNegatif;
+                }
+            }
+            
+            $IdealPositif = $IdealNegatif = array();
+            echo "<tr>";
+                echo "<td>Ideal (+)</td>"; 
+                foreach ($SUMIdealPositif as $id_kontraktor => $nilai) {
+                    $akar_nilai = sqrt($nilai);
+                    $IdealPositif[$id_kontraktor] = $akar_nilai;
+                    echo "<td>".price_format($akar_nilai)."</td>";
+                }
+            echo "</tr>";
+            echo "<tr>";
+                echo "<td>Ideal (-)</td>"; 
+                foreach ($SUMIdealNegatif as $id_kontraktor => $nilai) {
+                    $akar_nilai = sqrt($nilai);
+                    $IdealNegatif[$id_kontraktor] = $akar_nilai;
+                    echo "<td>".price_format($akar_nilai)."</td>";
+                }
+            echo "</tr>";
+        echo "</table>";
+
+        
+        //======================================================================
+        br();br();
+        //Mencari Kedekatan Relatif Setiap Alternatif
+        echo "<strong>Mencari Kedekatan Relatif Setiap Alternatif</strong>";
+        br();
+        echo "<table class='table table-bordered table-striped table-hover' style='width: 80%;'>
+                    <tr>
+                        <th colspan='".(count($kontraktor))."'><center>Alternatif</center></th>
+                    </tr>";
+                
+                echo "<tr>";    
+                foreach ($kontraktor as $id => $nama) {
+                    echo "<th>".$nama."</th>";  
+                }
+                echo "</tr>";
+                
+                $NilaiV = array();
+                echo "<tr>";
+                foreach ($kontraktor as $id_kontraktor => $nama) {
+                    $nilai_v = $IdealNegatif[$id_kontraktor]/($IdealPositif[$id_kontraktor]+$IdealNegatif[$id_kontraktor]);
+                    $NilaiV[$id_kontraktor] = $nilai_v;
+                    echo "<td>".price_format($nilai_v)."</td>";
+                }
+                echo "</tr>";
+        echo "</table>";
+        
+        
+        br();br();
+        //Urutan dari yang terbesar ke terkecil
+        echo "<strong>Urutan dari yang terbesar ke terkecil</strong>";
+        br();
+        //disimpan table saja trus di sort (order by)
+        
         
     echo "</div>";
     echo "</div>";
