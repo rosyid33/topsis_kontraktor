@@ -21,20 +21,22 @@
                 ?>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
-                        Proyek 
+                        Master 
                     </a>
                     <ul class="dropdown-menu">
+                        <li><a href="index.php?menu=kontraktor">Kontraktor</a></li>
                         <li><a href="index.php?menu=proyek">Master Proyek</a></li>
                         <li><a href="index.php?menu=kriteria">Kriteria</a></li>
-                        <!--<li><a href="index.php?menu=sub-kriteria">Sub-Kriteria</a></li>-->
+                        <li><a href="index.php?menu=user">User</a></li>
                     </ul>
                 </li>
                 
-                <li><a href="index.php?menu=kontraktor">Kontraktor</a></li>
+                
                 <li><a href="index.php?menu=input_nilai">Input Nilai</a></li>
 
                 <li><a href="index.php?menu=proses_topsis">Proses Topsis</a></li>
-                <li><a href="index.php?menu=user">User</a></li>
+                <li><a href="index.php?menu=laporan_hasil">Laporan Hasil</a></li>
+                
                 <li><a href="logout.php">Logout</a></li>
                 <?php
                 }
