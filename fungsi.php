@@ -1,7 +1,10 @@
 <?php
 
 function can_access_menu($menu){
-    if($_SESSION['topsis_kontraktor_level']==2 & ($menu=='hasil_rule' || $menu=='view_rule')){
+    if($_SESSION['topsis_kontraktor_level']==3 & ($menu=='input_nilai' || $menu=='proses_topsis')){
+        return true;
+    }
+    if($_SESSION['topsis_kontraktor_level']==2 & ($menu=='laporan_hasil')){
         return true;
     }
     if($_SESSION['topsis_kontraktor_level']==1){
@@ -82,7 +85,10 @@ function text_with_list_levels($label='', $name='', $value='', $required=false, 
                     label($label);
 //            end_column();
 //            start_column();
-                list_levels($name, $value, $required, $all, $text_all, $where, $params);
+                echo "<div class='col-lg-8'>";
+                $display = list_levels($name, $value, $required, $all, $text_all, $where, $params);
+                echo $display;
+                echo "</div>";
 //            end_column();
 //	end_row();
 }
@@ -100,18 +106,39 @@ function text_with_list_levels($label='', $name='', $value='', $required=false, 
  */
 function list_levels($name, $selected_id='', $required=false, $all=false, $text_all='-', $where='', $params=''){
         
-	echo "<select name='$name' "; if($required) echo "required='required'"; echo " class='form-control' $params >";
+	$list = "<select name='$name' "; if($required) $list .= "required='required'"; $list .= " class='form-control' $params >";
         //pilihan semua / kosong
         if($all){                
-            echo "<option value=''> $text_all </option>";
+            $list .= "<option value=''> $text_all </option>";
         }
 	
-        echo "<option value='1' ";
-            if($selected_id=="1") echo "selected='selected' >Admin</option>";
-        echo "<option value='2' ";
-            if($selected_id=="2") echo "selected='selected' >User Store</option>";
+        $list .= "<option value='1' ";
+            if($selected_id=="1") $list .= "selected='selected'"; 
+            $list .= ">Admin</option>";
+        $list .= "<option value='2' ";
+            if($selected_id=="2") $list .= "selected='selected'";
+            $list .= ">Manager</option>";
+        $list .= "<option value='3' ";
+            if($selected_id=="3") $list .= "selected='selected'";
+            $list .= ">Tim Tender</option>";
             
-	echo "</select>";
+	$list .= "</select>";
+        return $list;
+}
+
+function get_level_name($id){
+    if($id==1){
+        return "Admin";
+    }
+    elseif($id==2){
+        return "Manager";
+    }
+    elseif($id==3){
+        return "Tim Tender";
+    }
+    else{
+        return "";
+    }
 }
 //END LEVEL USERS===================================================================
 function list_periode($name, $selected_id='', $required=false, $all=false, $text_all='-', $where='', $params=''){

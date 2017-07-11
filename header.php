@@ -19,6 +19,10 @@
                 }
                 else{
                 ?>
+                
+                <?php
+                if($_SESSION['topsis_kontraktor_level']==1){
+                ?>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
                         Master 
@@ -27,16 +31,29 @@
                         <li><a href="index.php?menu=kontraktor">Kontraktor</a></li>
                         <li><a href="index.php?menu=proyek">Master Proyek</a></li>
                         <li><a href="index.php?menu=kriteria">Kriteria</a></li>
-                        <li><a href="index.php?menu=user">User</a></li>
+                        <li><a href="index.php?menu=users">Users</a></li>
                     </ul>
                 </li>
+                <?php
+                }
+                ?>
                 
+                <?php
+                if($_SESSION['topsis_kontraktor_level']!=2){
+                ?>
+                    <li><a href="index.php?menu=input_nilai">Input Nilai</a></li>
+                    <li><a href="index.php?menu=proses_topsis">Proses Topsis</a></li>
+                <?php
+                }
+                ?>
                 
-                <li><a href="index.php?menu=input_nilai">Input Nilai</a></li>
-
-                <li><a href="index.php?menu=proses_topsis">Proses Topsis</a></li>
-                <li><a href="index.php?menu=laporan_hasil">Laporan Hasil</a></li>
-                
+                <?php
+                if($_SESSION['topsis_kontraktor_level']!=3){
+                ?>
+                    <li><a href="index.php?menu=laporan_hasil">Laporan Hasil</a></li>
+                <?php
+                }
+                ?>
                 <li><a href="logout.php">Logout</a></li>
                 <?php
                 }
