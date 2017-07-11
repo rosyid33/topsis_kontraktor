@@ -72,16 +72,9 @@ if (isset($_POST['uncheck'])) {
 
 $sql = "SELECT
             kr.*,
-            sub_kr.`sub_kriteria`,
-            pr.`nama_proyek`,
-            k_proyek.`proyek_id`
+            sub_kr.`sub_kriteria`
           FROM
-            kriteria_proyek k_proyek
-            RIGHT JOIN 
-            proyek pr
-            ON k_proyek.`proyek_id` = pr.`id`
-            RIGHT JOIN kriteria kr
-            ON k_proyek.`kriteria_id` = kr.`id`,
+            kriteria kr,
             sub_kriteria sub_kr 
           WHERE 
           sub_kr.`id_kriteria` = kr.`id` ";
@@ -172,20 +165,26 @@ $jumlah = $db_object->db_num_rows($query);
                                     echo "<td>" . $row['kriteria_code'] . "</td>";
                                     echo "<td>" . $row['kriteria_nama'] . "</td>";
                                     echo "<td>" . $row['sub_kriteria'] . "</td>";
-                                    if (empty($row['proyek_id'])) {
+                                    
+                                    $sql = "SELECT * FROM kriteria_proyek
+                                            WHERE proyek_id = ".$IdProyek." AND kriteria_id = ".$row['id'];
+                                    $res_cek = $db_object->db_query($sql);
+                                    $ada = $db_object->db_num_rows($res_cek);
+                                    if ($ada > 0) {
+                                            echo "<td><center>Cheked</center></td>";
+                                        echo "<td>"
+                                        . "<center>"
+                                        . " <input type='checkbox' name='unceker[" . $row['id'] . "]' value='" . $row['id'] . "'/>"
+                                        . "</center>"
+                                        . "</td>";
+                                    } 
+                                    else {
                                         echo "<td>"
                                         . "<center>"
                                         . " <input type='checkbox' name='ceker[" . $row['id'] . "]' value='" . $row['id'] . "'/>"
                                         . "</center>"
                                         . "</td>";
                                         echo "<td><center>UnCheked</center></td>";
-                                    } else {
-                                        echo "<td><center>Cheked</center></td>";
-                                        echo "<td>"
-                                        . "<center>"
-                                        . " <input type='checkbox' name='unceker[" . $row['id'] . "]' value='" . $row['id'] . "'/>"
-                                        . "</center>"
-                                        . "</td>";
                                     }
 
                                     $no++;
