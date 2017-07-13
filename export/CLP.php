@@ -3,6 +3,7 @@ include_once "../database.php";
 include_once "../fungsi.php";
 include_once "fpdf16/fpdf.php";
 $IdProyek = $_REQUEST['proyekId'];
+$person = $_REQUEST['person'];
 //object database class
 $db_object = new database();
 
@@ -34,6 +35,7 @@ class PDF extends FPDF {
 
     //untuk pengaturan header halaman
     function Header() {
+        
         //Pengaturan Font Header
         $this->SetFont('Times', 'B', 14); //jenis font : Times New Romans, Bold, ukuran 14
         //untuk warna background Header
@@ -49,28 +51,50 @@ class PDF extends FPDF {
 }
 
 //pengaturan ukuran kertas P = Portrait
-$pdf = new PDF('L', 'cm', 'A4');
+$pdf = new PDF('P', 'cm', 'A4');
 $pdf->Open();
 $pdf->AddPage();
 $pdf->SetFont('Times', 'B', 12);
 //Ln() = untuk pindah baris
-$pdf->Cell(28, 1, 'Laporan Hasil Proses Topsis '.$proyek_row['nama_proyek'], 'LRTB', 0, 'C'); //TBLR (untuk garis)=> B = Bottom,
+
+$imagenurl = '../assets/images/logo.jpg';
+$pdf->Cell(0, 0, $pdf->Image($imagenurl, 1,1,3,2), 0, 0, 'C', false,'');
+
+$pdf->Ln();
+$pdf->Cell(18, 1, 'LAPORAN HASIL PERHITUNGAN', '', 0, 'C'); //TBLR (untuk garis)=> B = Bottom,
+$pdf->Ln();
+$pdf->Cell(18, 1, 'PEMILIHAN CALON KONTRAKTOR', 'B', 0, 'C'); //TBLR (untuk garis)=> B = Bottom,
+$pdf->Ln();
+$pdf->Ln();
+
+$pdf->Cell(18, 1, 'Nama Proyek: '.$proyek_row['nama_proyek'], '', 0, 'L'); //TBLR (untuk garis)=> B = Bottom,
 $pdf->Ln();
 $pdf->Ln();
 
 $pdf->Cell(1, 1, 'No', 'LRTB', 0, 'C');
-$pdf->Cell(24, 1, 'Kontraktor', 'LRTB', 0, 'C');
+$pdf->Cell(14, 1, 'Kontraktor', 'LRTB', 0, 'C');
 $pdf->Cell(3, 1, 'Nilai', 'LRTB', 0, 'C');
 $pdf->Ln();
 $pdf->SetFont('Times', "", 10);
 for ($j = 0; $j < $i; $j++) {
     //menampilkan data dari hasil query database
     $pdf->Cell(1, 1, $j + 1, 'LBTR', 0, 'C');
-    $pdf->Cell(24, 1, $cell[$j][0], 'LBTR', 0, 'L');
+    $pdf->Cell(14, 1, $cell[$j][0], 'LBTR', 0, 'L');
     $pdf->Cell(3, 1, $cell[$j][1], 'LBTR', 0, 'C');
     $pdf->Ln();
 }
 
+$pdf->Ln();
+$pdf->Ln();
+$pdf->Ln();
+$pdf->Cell(18, 1, 'Mengetahui,', '', 0, 'R'); 
+$pdf->Ln();
+$pdf->Ln();
+$pdf->Ln();
+$pdf->Ln();
+$pdf->Cell(18, 1, $person, '', 0, 'R'); 
+$pdf->Ln();
+$pdf->Cell(18, 1, 'Manager', '', 0, 'R'); 
 //menampilkan output berupa halaman PDF
 $pdf->Output();
 ?>

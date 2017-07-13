@@ -20,6 +20,7 @@ if ($num_rows > 0) {
         unset($_POST); // hapus post form
         $_SESSION['topsis_kontraktor_id'] = $rows['id']; // mengisi session
         $_SESSION['topsis_kontraktor_username'] = $rows['username'];
+        $_SESSION['topsis_kontraktor_nama'] = $rows['nama'];
         $_SESSION['topsis_kontraktor_level'] = $rows['akses'];
 
         $level_name = ($_SESSION['topsis_kontraktor_level']==1)?"admin":"kepala";

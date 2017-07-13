@@ -56,7 +56,8 @@ $jumlah=$db_object->db_num_rows($query);
                                     echo "<td>".$no."</td>";
                                     echo "<td>".$row['nama_proyek']."</td>";
                                     echo "<td>"
-                                            ." <a href='export/CLP.php?proyekId=".$row['id']."'>"
+                                            ." <a href='export/CLP.php?proyekId=".$row['id']."&person=".
+                                            $_SESSION['topsis_kontraktor_nama']."'>"
                                             . "<img src='assets/images/icon/pdf.gif'/></a>"
                                         . "</td>";
                                 echo "</tr>";
